@@ -1,3 +1,22 @@
+--- a/src/fccfg.c
++++ b/src/fccfg.c
+@@ -2336,6 +2336,16 @@
+           file[0] == '\\' ||
+           (isalpha (file[0]) && file[1] == ':' && (file[2] == '/' || file[2] == '\\'))))
+ 	strcat ((char *)path, "\\");
++#elif defined(__amigaos__)
++    /* AmigaDOS: a name with a volume or assign ("PROGDIR:fontconfig") stands
++     * on its own, an empty directory adds nothing, and no slash follows a
++     * colon (that would mean the parent directory). */
++    if (strchr ((const char *)file, ':'))
++	path[0] = '\0';
++    else if (path[0] && path[strlen ((char *)path) - 1] != '/' && path[strlen ((char *)path) - 1] != ':')
++	strcat ((char *)path, "/");
++    else
++	osize--;
+ #else
+     if ((!path[0] || path[strlen ((char *)path) - 1] != '/') && file[0] != '/')
+ 	strcat ((char *)path, "/");
 --- a/src/fcstr.c
 +++ b/src/fcstr.c
 @@ -1043,6 +1043,12 @@

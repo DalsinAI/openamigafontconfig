@@ -21,7 +21,7 @@ for the library goes to its authors; see `upstream/` for their notices.
 
 ## What the Amiga port changes
 
-- **AmigaDOS names** (`patches/fontconfig-2.18.3-amiga-paths.patch`, in `src/fcstr.c`): a name with a volume or assign (`PROGDIR:Fonts`, `DH1:Fonts`) is absolute; joining `PROGDIR:` and `Fonts` gives `PROGDIR:Fonts` with no slash, since a slash after the colon would mean the parent directory; and such names are not rewritten as POSIX paths.
+- **AmigaDOS names** (`patches/fontconfig-2.18.3-amiga-paths.patch`, in `src/fcstr.c` and `src/fccfg.c`): a name with a volume or assign (`PROGDIR:Fonts`, `DH1:Fonts`) is absolute; joining `PROGDIR:` and `Fonts` gives `PROGDIR:Fonts` with no slash, since a slash after the colon would mean the parent directory; such names are not rewritten as POSIX paths; and a configuration file named with a volume (`PROGDIR:fontconfig/fonts.conf`) is opened as it is, not as `/PROGDIR:...`, which made AmigaDOS ask for a disk called `/PROGDIR`.
 - **libnix gaps:** `getprogname`, `vasprintf` and `mkostemp` are not declared, so the script turns them off in `config.h` and uses `vsnprintf`.
 - **libpthread's macros:** `pthread.h` is included first, so its cancellation-point macros don't break FreeType's `stream->read`.
 
@@ -60,7 +60,7 @@ It has not yet been run on real Amiga hardware.
 
 ## Known issues
 
-- No `fonts.conf` is shipped yet; programs add their font folders with `FcConfigAppFontAddDir()`. The cache in `T:fontconfig` is untested.
+- No `fonts.conf` is shipped here; OpenBrowser ships its own (`PROGDIR:fontconfig/fonts.conf`, with its cache in `T:fontconfig`), and it works on the bench. Programs can also add font folders with `FcConfigAppFontAddDir()`.
 
 ## Licence
 
