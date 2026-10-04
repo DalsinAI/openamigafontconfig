@@ -1,0 +1,6 @@
+FONTCONFIG 21803 add_dir=1
+fonts=14
+match 'Liberation Serif:bold:italic' -> DH1:OBFonts/LiberationSerif-BoldItalic.ttf (Liberation Serif)
+match 'Liberation Mono' -> DH1:OBFonts/LiberationMono-Regular.ttf (Liberation Mono)
+match 'DejaVu Sans:bold' -> DH1:OBFonts/DejaVuSans-Bold.ttf (DejaVu Sans)
+FC_DONE

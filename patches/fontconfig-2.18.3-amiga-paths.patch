@@ -1,0 +1,47 @@
+--- a/src/fcstr.c
++++ b/src/fcstr.c
+@@ -1043,6 +1043,12 @@
+         (isalpha (*s) && s[1] == ':' && (s[2] == '/' || s[2] == '\\')))
+ 	return FcTrue;
+ #endif
++#ifdef __amigaos__
++    /* AmigaDOS: a volume or assign name ("PROGDIR:", "DH1:Fonts") makes a
++     * path absolute. */
++    if (strchr ((const char *)s, ':'))
++	return FcTrue;
++#endif
+     return *s == '/';
+ }
+ 
+@@ -1084,7 +1090,13 @@
+ 	goto bail2;
+     p = ret;
+     while ((s = FcStrListNext (list))) {
++#ifdef __amigaos__
++	/* "PROGDIR:" + "Fonts" is "PROGDIR:Fonts"; a slash after the colon
++	 * would mean the parent directory. */
++	if (p != ret && p[-1] != ':') {
++#else
+ 	if (p != ret) {
++#endif
+ 	    p[0] = FC_DIR_SEPARATOR;
+ 	    p++;
+ 	}
+@@ -1296,6 +1308,17 @@
+     FcConvertDosPath ((char *)full);
+     return FcStrCanonAbsoluteFilename (full);
+ #else
++#ifdef __amigaos__
++    /* AmigaDOS names are not POSIX paths: "/" and ".." mean other things, so
++     * a name with a volume is kept as it is, less a trailing slash. */
++    if (strchr ((const char *)s, ':')) {
++	FcChar8 *file = FcStrCopy (s);
++	size_t   len = file ? strlen ((const char *)file) : 0;
++	if (len > 1 && file[len - 1] == '/' && file[len - 2] != ':')
++	    file[len - 1] = '\0';
++	return file;
++    }
++#endif
+     if (s[0] == '/')
+ 	return FcStrCanonAbsoluteFilename (s);
+     else {
