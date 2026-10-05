@@ -59,6 +59,7 @@ DEPS=${DEPS_PREFIX:?set DEPS_PREFIX to a prefix with FreeType, libpng, zlib and 
 unpack fontconfig fontconfig-2.18.3.tar.xz 4f7b554a38cdf78c033f666c8871f3749e14a094f65a07f630c91ed0b43d35e3
 cd "$WORK/fontconfig/fontconfig-2.18.3"
 patch -p1 < "$HERE/patches/fontconfig-2.18.3-amiga-paths.patch"
+patch -p1 < "$HERE/patches/fontconfig-2.18.3-amiga-cache.patch"
 mkdir -p build && cd build
 PATH=$P/bin:$PATH ac_cv_va_copy=C99 CC=m68k-amigaos-gcc AR=m68k-amigaos-ar RANLIB=m68k-amigaos-ranlib \
     CFLAGS="$CFLAGS" CPPFLAGS="-I$DEPS/include" LDFLAGS="-L$DEPS/lib" \

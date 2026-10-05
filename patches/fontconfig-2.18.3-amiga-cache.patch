@@ -1,0 +1,38 @@
+--- a/src/fcatomic.c
++++ b/src/fcatomic.c
+@@ -53,6 +53,11 @@
+ 
+ #include "fcint.h"
+ 
++#ifdef __amigaos__
++/* AmigaOS: lock with a directory, as without hard links (libnix has none). */
++#undef HAVE_LINK
++#endif
++
+ #include <stdlib.h>
+ #include <sys/stat.h>
+ #include <sys/types.h>
+@@ -192,7 +197,8 @@
+ FcBool
+ FcAtomicReplaceOrig (FcAtomic *atomic)
+ {
+-#ifdef _WIN32
++#if defined(_WIN32) || defined(__amigaos__)
++    /* AmigaDOS does not rename onto an existing name either. */
+     unlink ((const char *)atomic->file);
+ #endif
+     if (rename ((char *)atomic->new, (char *)atomic->file) < 0)
+--- a/src/fccompat.c
++++ b/src/fccompat.c
+@@ -150,7 +150,10 @@
+     fd = mkostemp (template, FC_O_CLOEXEC);
+ #elif HAVE_MKSTEMP
+     fd = mkstemp (template);
+-#  ifdef F_DUPFD_CLOEXEC
++#  if defined(__amigaos__)
++    /* AmigaOS starts no programs with exec(), so there is nothing to close
++     * on exec, and libnix's fcntl() does not do F_DUPFD_CLOEXEC. */
++#  elif defined(F_DUPFD_CLOEXEC)
+     if (fd != -1) {
+ 	int newfd = fcntl (fd, F_DUPFD_CLOEXEC, STDIN_FILENO);
+ 
