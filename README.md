@@ -69,3 +69,7 @@ Dalsin Limited's Amiga changes (the build script, patches, configuration
 headers and tests) are MIT, Copyright (c) 2026 Dalsin Limited: see
 [LICENSE](LICENSE). Fontconfig keeps its own licence, in
 [upstream/](upstream/); a patch to its source stays under that licence.
+
+## Contributors
+
+openamigafontconfig is created and maintained by [SacredTrees](https://github.com/SacredTrees) with the AmigaChrome agent team, copyright Dalsin Limited. Everyone whose work it includes is credited in [`CONTRIBUTORS.md`](CONTRIBUTORS.md).
