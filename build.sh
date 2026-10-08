@@ -23,7 +23,7 @@ CC="$P/bin/m68k-amigaos-gcc"
 CXX="$P/bin/m68k-amigaos-g++"
 AR="$P/bin/m68k-amigaos-ar"
 CPU=${OS32_CPU_FLAGS:-"-m68020 -m68881 -mcrt=nix20"}
-CFLAGS="-O2 $CPU -D_DEFAULT_SOURCE=1 -D_POSIX_TIMERS=1 -D_POSIX_REALTIME_SIGNALS=1 -fno-common"
+CFLAGS="-O2 $CPU -fno-delete-null-pointer-checks -D_DEFAULT_SOURCE=1 -D_POSIX_TIMERS=1 -D_POSIX_REALTIME_SIGNALS=1 -fno-common"
 mkdir -p "$OUT/include" "$OUT/lib" "$WORK"
 
 # unpack NAME TARBALL SHA256: check the tarball and unpack it into $WORK
@@ -60,6 +60,7 @@ unpack fontconfig fontconfig-2.18.3.tar.xz 4f7b554a38cdf78c033f666c8871f3749e14a
 cd "$WORK/fontconfig/fontconfig-2.18.3"
 patch -p1 < "$HERE/patches/fontconfig-2.18.3-amiga-paths.patch"
 patch -p1 < "$HERE/patches/fontconfig-2.18.3-amiga-cache.patch"
+patch -p1 < "$HERE/patches/fontconfig-2.18.3-null-checks.patch"
 mkdir -p build && cd build
 PATH=$P/bin:$PATH ac_cv_va_copy=C99 CC=m68k-amigaos-gcc AR=m68k-amigaos-ar RANLIB=m68k-amigaos-ranlib \
     CFLAGS="$CFLAGS" CPPFLAGS="-I$DEPS/include" LDFLAGS="-L$DEPS/lib" \

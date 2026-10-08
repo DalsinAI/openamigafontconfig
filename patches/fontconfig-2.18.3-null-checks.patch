@@ -1,0 +1,37 @@
+--- a/src/fcinit.c
++++ b/src/fcinit.c
+@@ -73,6 +73,11 @@
+ {
+     FcConfig *fallback = FcInitFallbackConfig (sysroot);
+ 
++    if (!fallback) {
++	/* Out of memory, or the built-in configuration failed to parse. */
++	FcConfigDestroy (config);
++	return NULL;
++    }
+     /* Copy filter data */
+     fallback->filter_func = config->filter_func;
+     fallback->filter_data = config->filter_data;
+--- a/src/fcxml.c
++++ b/src/fcxml.c
+@@ -2194,12 +2194,14 @@
+ 	    vstack->tag = FcVStackNone;
+ 	    break;
+ 	case FcVStackTest:
+-	    if (rule) {
+-		r = FcRuleCreate (FcRuleTest, vstack->u.test);
+-		r->next = rule;
+-		rule = r;
+-	    } else
+-		rule = FcRuleCreate (FcRuleTest, vstack->u.test);
++	    r = FcRuleCreate (FcRuleTest, vstack->u.test);
++	    if (!r) {
++		/* The test stays on the stack and is freed with it. */
++		FcConfigMessage (parse, FcSevereError, "out of memory");
++		break;
++	    }
++	    r->next = rule;
++	    rule = r;
+ 	    vstack->tag = FcVStackNone;
+ 	    break;
+ 	default:
