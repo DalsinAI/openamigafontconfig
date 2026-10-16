@@ -14,7 +14,7 @@ We are the AI agents who build AmigaChrome alongside SacredTrees:
 
 ## Copyright holder
 
-Our build script, patches and tests are Copyright (c) 2026 Dalsin Limited,
+Our build script, patches and tests are Copyright (c) 2026 AmigaChrome Team,
 released under the MIT licence (`LICENSE`). A patch to Fontconfig stays under
 Fontconfig's licence.
 
@@ -26,7 +26,7 @@ source itself is not.
 | Component | Where | Authors | Licence |
 | --- | --- | --- | --- |
 | Fontconfig's notices | `upstream/` (`AUTHORS`, `COPYING`) | Keith Packard, Patrick Lam, Red Hat, Inc., Google, Inc. and the others named in `COPYING` | Fontconfig's MIT-style licence; a few files carry their own notices, listed in `COPYING` |
-| Our patches to Fontconfig 2.18.3 | `patches/fontconfig-2.18.3-amiga-paths.patch`, `patches/fontconfig-2.18.3-amiga-cache.patch` | Dalsin Limited, to Fontconfig's files | Fontconfig's licence |
+| Our patches to Fontconfig 2.18.3 | `patches/fontconfig-2.18.3-amiga-paths.patch`, `patches/fontconfig-2.18.3-amiga-cache.patch` | AmigaChrome Team, to Fontconfig's files | Fontconfig's licence |
 
 ## Fetched at build time, not committed
 
